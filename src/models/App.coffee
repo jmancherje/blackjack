@@ -6,3 +6,24 @@ class window.App extends Backbone.Model
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
 
+    @get('dealerHand').on('bust', ->
+      console.log('dealer bust')
+      alert('Dealer Bust'))
+    
+    @get('playerHand').on('bust', ->
+      alert('Player Bust'))
+
+    player = @get('playerHand')
+    dealer = @get('dealerHand')
+
+    #console.log(@model)
+    @get('dealerHand').on 'gameEnd', ->
+      dealerScore = dealer.minScore()
+      playerScore = player.minScore()
+      if dealerScore > playerScore
+        alert('Dealer Wins')
+      else if dealerScore < playerScore
+        alert('Player Wins')
+      else
+        alert('Push')
+
