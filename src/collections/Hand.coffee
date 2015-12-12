@@ -6,16 +6,22 @@ class window.Hand extends Backbone.Collection
 
   hit: ->
     if @isDealer
-      while(@minScore() < 17)
+      # id = setInterval(->
+      # @add(@deck.pop())
+      # if @minScore() >17
+      #   clearInterval(id)
+      # 1000)
+
+      while(@scores()< 17)
         @add(@deck.pop())
-      if (@minScore() > 21)
+      if (@scores()> 21)
         @trigger('bust')        
       else
         @trigger('gameEnd')
 
     else
       @add(@deck.pop())
-      if (@minScore() > 21)
+      if (@scores()> 21)
         @trigger('bust')
         console.log('player over 21')
 
@@ -25,7 +31,7 @@ class window.Hand extends Backbone.Collection
   dealerStart: ->
     console.log('dealer start')
     @at(0).flip()
-    if @minScore() < 17
+    if @scores()< 17
       @hit()
     else 
       @trigger('gameEnd')
@@ -42,6 +48,13 @@ class window.Hand extends Backbone.Collection
     # The scores are an array of potential scores.
     # Usually, that array contains one element. That is the only score.
     # when there is an ace, it offers you two scores - the original score, and score + 10.
-    [@minScore(), @minScore() + 10 * @hasAce()]
+    min = @minScore() 
+    max = @minScore() + 10 * @hasAce()
+    if max > 21
+      return min
+    else
+      max
+    # [@minScore(), @minScore() + 10 * @hasAce()]
+
 
 
