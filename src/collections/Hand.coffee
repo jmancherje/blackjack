@@ -3,7 +3,6 @@ class window.Hand extends Backbone.Collection
 
   initialize: (array, @deck, @isDealer) ->
 
-
   hit: ->
     if @isDealer
       # id = setInterval(->
@@ -43,6 +42,18 @@ class window.Hand extends Backbone.Collection
   minScore: -> @reduce (score, card) ->
     score + if card.get 'revealed' then card.get 'value' else 0
   , 0
+
+  # getCount: ->  
+  #   count = 0
+  #   @reduce (score, card) ->
+  #     console.log(score);
+  #     cardValue = if card.get 'revealed' then card.get 'value' else 0
+  #     if 2 <= cardValue <= 6 then count++
+  #     if 10 <= cardValue <= 11 then count--
+  #     score += cardValue
+  #   , 0
+  #   @set 'count', count
+  #   count
 
   scores: ->
     # The scores are an array of potential scores.

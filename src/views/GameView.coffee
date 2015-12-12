@@ -10,7 +10,6 @@ class window.GameView extends Backbone.View
     'click .hit-button': -> @model.get('playerHand').hit()
     'click .stand-button': -> @model.get('dealerHand').dealerStart()
     'click .reset-button': ->
-      console.log('Game View triggered reset event')
       #@model.trigger('reset')
       @model.set 'playerHand', @model.get('deck').dealPlayer()
       @model.set 'dealerHand', @model.get('deck').dealDealer()
@@ -40,3 +39,4 @@ class window.GameView extends Backbone.View
   renderHands: ->
     @$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
     @$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el
+    @model.trigger('updateCount')

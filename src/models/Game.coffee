@@ -5,52 +5,58 @@ class window.Game extends Backbone.Model
     @set 'deck', deck = new Deck()
     @set 'playerHand', deck.dealPlayer()
     @set 'dealerHand', deck.dealDealer()
+    @set 'count', 0
+    @resetHands()
+    @getCount()
+    @trigger('init')
+    console.log(@)
 
-    @get('dealerHand').on('bust', ->
-      # console.log('dealer bust')
-      setTimeout( -> 
-        alert('Dealer Bust')
-      100)
+  getCount: ->
+    count = @get 'count'
+    # playerHand = @get('playerHand')
+    # dealerHard = @get('dealerHand')
+    console.log(@get('dealerHand'))
+    @get('playerHand').forEach((card)->
+      val = card.get 'value'
+      console.log(val) 
+      if 2 <= val <= 6 then count++
+      if 10 <= val <= 11 then count--
+      console.log(count)
       )
-    
-    @get('playerHand').on('bust', ->
-      setTimeout( -> 
-        alert('Player Bust')
-      100)
+    @get('dealerHand').forEach((card)-> 
+      val = if card.get 'revealed' then card.get 'value' else 0
+      console.log(val) 
+      if 2 <= val <= 6 then count++
+      if val == 10 or val == 1 then count--
+      console.log(count)
       )
-
-    player = @get('playerHand')
-    dealer = @get('dealerHand')
-    deck = @get('deck')
-    self = @
-
-    #console.log(@model)
-    @get('dealerHand').on 'gameEnd', ->
-      dealerScore = dealer.scores()
-      playerScore = player.scores()
-      if dealerScore > playerScore
-        setTimeout( -> 
-          alert('Dealer Wins')
-        100)
-      else if dealerScore < playerScore
-        setTimeout( -> 
-          alert('Player Wins') 
-        100)
-      else
-        setTimeout( -> 
-          alert('Push')
-        100)
+    @set 'count', count
+    console.log('Count set', @get('count'))
 
   resetHands: ->
-    @get('dealerHand').on('bust', ->
+    # @on('change:count', ->
+    #   @trigger
+    #   )
+    @get('playerHand').on('add reset update all', => 
+      @getCount()
+      @trigger 'updateCount'
+      )
+
+    @get('dealerHand').on 'add update all', => 
+      @getCount()
+      @trigger 'updateCount'
+
+    @get('dealerHand').on('bust', =>
       # console.log('dealer bust')
-      setTimeout( -> 
+      @trigger('playerWin')
+      setTimeout( => 
         alert('Dealer Bust')
       100)
       )
     
-    @get('playerHand').on('bust', ->
-      setTimeout( -> 
+    @get('playerHand').on('bust', =>
+      setTimeout( => 
+        @trigger('dealerWin')
         alert('Player Bust')
       100)
       )
@@ -61,18 +67,20 @@ class window.Game extends Backbone.Model
     self = @
 
     #console.log(@model)
-    @get('dealerHand').on 'gameEnd', ->
+    @get('dealerHand').on 'gameEnd', =>
       dealerScore = dealer.scores()
       playerScore = player.scores()
       if dealerScore > playerScore
-        setTimeout( -> 
+        setTimeout( => 
+          @trigger('dealerWin')
           alert('Dealer Wins')
         100)
       else if dealerScore < playerScore
-        setTimeout( -> 
+        setTimeout( => 
+          @trigger('playerWin')
           alert('Player Wins') 
         100)
       else
-        setTimeout( -> 
+        setTimeout( => 
           alert('Push')
         100)
