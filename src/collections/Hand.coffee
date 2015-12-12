@@ -55,6 +55,6 @@ class window.Hand extends Backbone.Collection
     else
       max
     # [@minScore(), @minScore() + 10 * @hasAce()]
-
-
-
+  reRender: ->
+    @trigger('renderHand')
+    console.log('reRender from hand model')
