@@ -6,7 +6,7 @@ class window.AppView extends Backbone.View
   initialize: ->
     @render()
     @model.on('change:game', @render, this)
-    @model.get('game').on('change:count', =>  
+    @model.get('game').on('change:count init', =>  
       console.log('change in game count')
       console.log('game: ', @model.get('game').get('count'))
       currentCount = @model.get 'cardCount'
@@ -38,5 +38,7 @@ class window.AppView extends Backbone.View
     @$el.children().detach()
     @$el.html @template @model.attributes
     @$('.AppView').append new GameView(model: @model.get 'game').el
+    @$('.AppView').append new OldGamesView(collection: @model.get 'game').el
+
     #@$('.player-hand-container').html new HandView(collection: @model.get 'playerHand').el
     #@$('.dealer-hand-container').html new HandView(collection: @model.get 'dealerHand').el

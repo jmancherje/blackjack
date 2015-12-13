@@ -11,6 +11,11 @@ class window.GameView extends Backbone.View
     'click .stand-button': -> @model.get('dealerHand').dealerStart()
     'click .reset-button': ->
       #@model.trigger('reset')
+      # oldGameClone = _.clone(@model)
+      oldGameClone = _.extend({}, @model);
+        # new OldGameView(model: @model.clone())
+      console.log(@model, oldGameClone)
+      $('.old-games').append(new OldGameView(model: oldGameClone).el)
       @model.set 'playerHand', @model.get('deck').dealPlayer()
       @model.set 'dealerHand', @model.get('deck').dealDealer()
       @model.resetHands()
@@ -20,6 +25,7 @@ class window.GameView extends Backbone.View
           alert('Shuffeling deck')
         100)
         @model.set 'deck', deck = new Deck()
+
       # @model.get('playerHand').reRender()
       # @model.get('dealerHand').reRender()
       # console.log(@model.get('playerHand'))

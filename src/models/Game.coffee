@@ -7,44 +7,44 @@ class window.Game extends Backbone.Model
     @set 'dealerHand', deck.dealDealer()
     @set 'count', 0
     @resetHands()
-    @getCount()
+    # @getCount()
     @trigger('init')
-    console.log(@)
+    # console.log(@)
 
-  getCount: ->
-    count = @get 'count'
-    # playerHand = @get('playerHand')
-    # dealerHard = @get('dealerHand')
-    console.log(@get('dealerHand'))
-    @get('playerHand').forEach((card)->
-      val = card.get 'value'
-      console.log(val) 
-      if 2 <= val <= 6 then count++
-      if 10 <= val <= 11 then count--
-      console.log(count)
-      )
-    @get('dealerHand').forEach((card)-> 
-      val = if card.get 'revealed' then card.get 'value' else 0
-      console.log(val) 
-      if 2 <= val <= 6 then count++
-      if val == 10 or val == 1 then count--
-      console.log(count)
-      )
-    @set 'count', count
-    console.log('Count set', @get('count'))
+  # getCount: ->
+  #   count = @get 'count'
+  #   # playerHand = @get('playerHand')
+  #   # dealerHard = @get('dealerHand')
+  #   console.log(@get('dealerHand'))
+  #   @get('playerHand').forEach((card)->
+  #     val = card.get 'value'
+  #     console.log(val) 
+  #     if 2 <= val <= 6 then count++
+  #     if 10 <= val <= 11 then count--
+  #     console.log(count)
+  #     )
+  #   @get('dealerHand').forEach((card)-> 
+  #     val = if card.get 'revealed' then card.get 'value' else 0
+  #     console.log(val) 
+  #     if 2 <= val <= 6 then count++
+  #     if val == 10 or val == 1 then count--
+  #     console.log(count)
+  #     )
+  #   @set 'count', count
+  #   console.log('Count set', @get('count'))
 
   resetHands: ->
     # @on('change:count', ->
     #   @trigger
     #   )
-    @get('playerHand').on('add reset update all', => 
-      @getCount()
-      @trigger 'updateCount'
-      )
+    # @get('playerHand').on('add reset update all', => 
+    #   @getCount()
+    #   @trigger 'updateCount'
+    #   )
 
-    @get('dealerHand').on 'add update all', => 
-      @getCount()
-      @trigger 'updateCount'
+    # @get('dealerHand').on 'add update all', => 
+    #   # @getCount()
+    #   @trigger 'updateCount'
 
     @get('dealerHand').on('bust', =>
       # console.log('dealer bust')
